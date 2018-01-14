@@ -19,6 +19,19 @@ class Tiket_model extends CI_Model
         return $this->db->get_where('tiket',array('kd_tiket'=>$kd_tiket))->row_array();
     }
     
+    function get_Tiketjoin()
+        {
+
+            $this->db->select('kd_tiket, kd_bus, tgl, jam, k1.`nama_kota` AS asal, k2.`nama_kota` AS tujuan, harga, stock');
+            $this->db->from('tiket');
+            $this->db->join('kota k1', 'tiket.asal = k1.id_kota');
+            $this->db->join('kota k2', 'tiket.tujuan = k2.id_kota');
+            $this->db->order_by('kd_tiket', 'ASC');
+            $query = $this->db->get();
+            return $query->result_array();
+
+        }
+
     /*
      * Get all tiket count
      */
@@ -33,7 +46,7 @@ class Tiket_model extends CI_Model
      */
     function get_all_tiket($params = array())
     {
-        $this->db->order_by('kd_tiket', 'desc');
+        $this->db->order_by('kd_tiket', 'asc');
         if(isset($params) && !empty($params))
         {
             $this->db->limit($params['limit'], $params['offset']);
@@ -65,5 +78,18 @@ class Tiket_model extends CI_Model
     function delete_tiket($kd_tiket)
     {
         return $this->db->delete('tiket',array('kd_tiket'=>$kd_tiket));
+    }
+
+    function found_tiket($datacari)
+    {
+            $this->db->select('kd_tiket, kd_bus, tgl, jam, k1.`nama_kota` AS asal, k2.`nama_kota` AS tujuan, harga, stock');
+            $this->db->from('tiket');
+            $this->db->join('kota k1', 'tiket.asal = k1.id_kota');
+            $this->db->join('kota k2', 'tiket.tujuan = k2.id_kota');
+            $this->db->where('k1.nama_kota', $datacari['asal']);
+            $this->db->where('k2.nama_kota', $datacari['tujuan']);
+            $this->db->order_by('kd_tiket', 'ASC');
+            $query = $this->db->get();
+            return $query->result_array();
     }
 }

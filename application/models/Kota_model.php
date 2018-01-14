@@ -14,6 +14,7 @@ class Kota_model extends CI_Model
     /*
      * Get kota by id_kota
      */
+    
     function get_kota($id_kota)
     {
         return $this->db->get_where('kota',array('id_kota'=>$id_kota))->row_array();
@@ -24,7 +25,7 @@ class Kota_model extends CI_Model
      */
     function get_all_kota()
     {
-        $this->db->order_by('id_kota', 'desc');
+        $this->db->order_by('nama_kota', 'asc');
         return $this->db->get('kota')->result_array();
     }
         

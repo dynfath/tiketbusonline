@@ -1,7 +1,7 @@
 <?php 
  ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
   <head>
 
@@ -24,38 +24,12 @@
   <body>
 
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-      <div class="container">
-        <a class="navbar-brand" href="#">Tiket Bus </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="<?php echo base_url('homepage');?>">Home
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Login</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <div class="form">
-      <div id="login">   
+<div class="container">
+    <div class="form"> 
           <h1>Login</h1>
 
       <form action="/" method="post" name="logpelanggan">
-
+        
       <div class="field-wrap">
             <label>
               Username<span class="req">*</span>
@@ -68,12 +42,10 @@
             <input type="password"required autocomplete="off" name="password"/>
           </div>
           <button type="submit" class="button button-block">LOGIN</button>
-        </form>
-      </div>
+        </form>  
     </div>
       
-    
-    
+</div>
     
     <!-- Footer -->
     <footer class="py-5 bg-dark">

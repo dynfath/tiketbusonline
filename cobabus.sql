@@ -16,21 +16,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`cobabus` /*!40100 DEFAULT CHARACTER SET
 
 USE `cobabus`;
 
-/*Table structure for table `admin` */
-
-DROP TABLE IF EXISTS `admin`;
-
-CREATE TABLE `admin` (
-  `username` varchar(15) NOT NULL,
-  `password` varchar(20) DEFAULT NULL,
-  `id_pegawai` varchar(10) DEFAULT NULL,
-  `nama_admin` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`username`),
-  UNIQUE KEY `id_pegawai` (`id_pegawai`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-/*Data for the table `admin` */
-
 /*Table structure for table `bus` */
 
 DROP TABLE IF EXISTS `bus`;
@@ -180,21 +165,49 @@ insert  into `kota`(`id_kota`,`nama_kota`) values
 ('3673','KOTA SERANG'),
 ('3674','KOTA TANGERANG SELATAN');
 
-/*Table structure for table `pelanggan` */
+/*Table structure for table `pemesanan` */
 
-DROP TABLE IF EXISTS `pelanggan`;
+DROP TABLE IF EXISTS `pemesanan`;
 
-CREATE TABLE `pelanggan` (
-  `id_pelanggan` char(16) NOT NULL,
+CREATE TABLE `pemesanan` (
+  `kd_pesan` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pemesan` char(16) DEFAULT NULL,
+  `kd_tiket` char(5) DEFAULT NULL,
+  `tgl_trans` date DEFAULT NULL,
+  `jml_tiket` int(11) DEFAULT NULL,
+  `total_harga` int(11) DEFAULT NULL,
+  `status` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`kd_pesan`),
+  KEY `id_pelanggan` (`id_pemesan`),
+  KEY `kd_tiket` (`kd_tiket`),
+  CONSTRAINT `pemesanan_ibfk_1` FOREIGN KEY (`id_pemesan`) REFERENCES `pengguna` (`id_pengguna`),
+  CONSTRAINT `pemesanan_ibfk_2` FOREIGN KEY (`kd_tiket`) REFERENCES `tiket` (`kd_tiket`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+/*Data for the table `pemesanan` */
+
+/*Table structure for table `pengguna` */
+
+DROP TABLE IF EXISTS `pengguna`;
+
+CREATE TABLE `pengguna` (
+  `id_pengguna` char(16) NOT NULL,
   `nama` varchar(50) DEFAULT NULL,
-  `alamat` varchar(255) DEFAULT NULL,
+  `role` varchar(10) DEFAULT NULL,
   `username` varchar(15) NOT NULL,
   `password` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_pelanggan`),
+  PRIMARY KEY (`id_pengguna`),
   UNIQUE KEY `unik` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-/*Data for the table `pelanggan` */
+/*Data for the table `pengguna` */
+
+insert  into `pengguna`(`id_pengguna`,`nama`,`role`,`username`,`password`) values 
+('0735560864643368','aaa','Pelanggan','aaa','aaa'),
+('1234567812345678','Adsa','Admin','imadmin','admin'),
+('222222222222222','Adwa','Pelanggan','pengguna1','pengguna1'),
+('3657906945413848','aaaaaaaaaa','Pelanggan','aaaaaaaaaaaa','aaaaaaaaaaaa'),
+('6973058894844498','hahahaha','Pelanggan','kalasasa','abcdefghijkl');
 
 /*Table structure for table `tiket` */
 
@@ -204,10 +217,11 @@ CREATE TABLE `tiket` (
   `kd_tiket` varchar(5) NOT NULL,
   `kd_bus` char(5) DEFAULT NULL,
   `tgl` date DEFAULT NULL,
+  `jam` time DEFAULT NULL,
   `asal` varchar(255) DEFAULT NULL,
   `tujuan` varchar(255) DEFAULT NULL,
   `harga` int(11) DEFAULT NULL,
-  `stock` int(11) DEFAULT NULL,
+  `sisa_tiket` int(11) DEFAULT NULL,
   PRIMARY KEY (`kd_tiket`),
   KEY `kd_bus` (`kd_bus`),
   KEY `asal` (`asal`),
@@ -219,23 +233,12 @@ CREATE TABLE `tiket` (
 
 /*Data for the table `tiket` */
 
-/*Table structure for table `transaksi` */
-
-DROP TABLE IF EXISTS `transaksi`;
-
-CREATE TABLE `transaksi` (
-  `id_pelanggan` char(16) DEFAULT NULL,
-  `kd_tiket` char(5) DEFAULT NULL,
-  `tgl_trans` date DEFAULT NULL,
-  `jml_tiket` int(11) DEFAULT NULL,
-  `total_harga` int(11) DEFAULT NULL,
-  KEY `id_pelanggan` (`id_pelanggan`),
-  KEY `kd_tiket` (`kd_tiket`),
-  CONSTRAINT `transaksi_ibfk_1` FOREIGN KEY (`id_pelanggan`) REFERENCES `pelanggan` (`id_pelanggan`),
-  CONSTRAINT `transaksi_ibfk_2` FOREIGN KEY (`kd_tiket`) REFERENCES `tiket` (`kd_tiket`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-/*Data for the table `transaksi` */
+insert  into `tiket`(`kd_tiket`,`kd_bus`,`tgl`,`jam`,`asal`,`tujuan`,`harga`,`sisa_tiket`) values 
+('A0001','123','2018-01-11','13:00:00','3173','3273',75000,46),
+('A0002','123','2018-01-11','11:00:00','3273','3173',75000,39),
+('A0003','123','2018-01-11','14:00:00','3273','3175',80000,52),
+('A0004','123','2018-01-11','12:00:00','3175','3273',80000,52),
+('A0005','123','2018-01-14','15:00:00','3273','3173',80000,44);
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

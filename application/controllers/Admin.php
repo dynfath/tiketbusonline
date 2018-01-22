@@ -9,6 +9,7 @@ class Admin extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Admin_model');
+        $this->load->model('Tiket_model');
     } 
 
     /*
@@ -16,93 +17,115 @@ class Admin extends CI_Controller{
      */
     function index()
     {
-        $data['admin'] = $this->Admin_model->get_all_admin();
-        
-        $data['_view'] = 'admin/index';
-        $this->load->view('layouts/main',$data);
+        $login = array(
+                'isLogin' => $this->session->userdata('isLogin'),
+                'id_pengguna' => $this->session->userdata('id_pengguna'),
+                'nama' => $this->session->userdata('nama'),
+                'role' => $this->session->userdata('role'),
+                 );
+        $data['login'] = $login;
+        $data['pemesanan'] = $this->Admin_model->getpesanan();
+        $this->load->view('admin/header',$data);
+        $this->load->view('admin/admin', $data);
     }
 
-    /*
-     * Adding a new admin
-     */
-    function add()
-    {   
-        $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('password','Password','max_length[20]');
-		$this->form_validation->set_rules('id_pegawai','Id Pegawai','max_length[10]');
-		$this->form_validation->set_rules('nama_admin','Nama Admin','max_length[50]');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'password' => $this->input->post('password'),
-				'id_pegawai' => $this->input->post('id_pegawai'),
-				'nama_admin' => $this->input->post('nama_admin'),
-            );
-            
-            $admin_id = $this->Admin_model->add_admin($params);
-            redirect('admin/index');
-        }
-        else
-        {            
-            $data['_view'] = 'admin/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
-    /*
-     * Editing a admin
-     */
-    function edit($username)
-    {   
-        // check if the admin exists before trying to edit it
-        $data['admin'] = $this->Admin_model->get_admin($username);
-        
-        if(isset($data['admin']['username']))
-        {
-            $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('password','Password','max_length[20]');
-			$this->form_validation->set_rules('id_pegawai','Id Pegawai','max_length[10]');
-			$this->form_validation->set_rules('nama_admin','Nama Admin','max_length[50]');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'password' => $this->input->post('password'),
-					'id_pegawai' => $this->input->post('id_pegawai'),
-					'nama_admin' => $this->input->post('nama_admin'),
-                );
-
-                $this->Admin_model->update_admin($username,$params);            
-                redirect('admin/index');
-            }
-            else
-            {
-                $data['_view'] = 'admin/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The admin you are trying to edit does not exist.');
-    } 
-
-    /*
-     * Deleting admin
-     */
-    function remove($username)
+    function Menutiket()
     {
-        $admin = $this->Admin_model->get_admin($username);
+       
+        $data['tiket'] = $this->Tiket_model->get_tiketjoin();
+        $this->load->view('admin/header');
+        $this->load->view('admin/datatiket', $data);
+    }
 
-        // check if the admin exists before trying to delete it
-        if(isset($admin['username']))
-        {
-            $this->Admin_model->delete_admin($username);
-            redirect('admin/index');
-        }
-        else
-            show_error('The admin you are trying to delete does not exist.');
+    function Menubis()
+    {
+       
+        $this->load->view('admin/header');
+        $this->load->view('admin/databis', $data);
+    }
+
+    function konfirmasi()
+    {
+        $id = array(
+            'kd_pesan' => $this->input->post('kd_pesan')
+        );
+
+        $data = $this->Admin_model->konfirmpesan($id);
+        echo json_encode($data);
+    }
+
+    function hapusTiket(){
+        $dataCari = array(
+            'kd_tiket' => $this->input->post('kd_tiket')
+        );
+        $data = $this->Admin_model->deletetiket($dataCari);
+        echo json_encode($data);
+
+    }
+
+    function edittiket(){
+
+        $dataKode = array(
+                        'kd_tiket' => $this->session->userdata('kd_tiket'),
+                        'kd_bus' => $this->session->userdata('kd_bus'),
+                        'asal' => $this->session->userdata('asal'),
+                        'tujuan' => $this->session->userdata('tujuan')
+                );
+        
+        $data['tiket'] = $this->Admin_model->getKodeTiket($dataKode);
+        $data['bus'] = $this->Admin_model->getBus();
+        $data['kota'] = $this->Admin_model->getKota();
+        $data['kode_awal'] = $this->session->userdata('kode_bus');
+        $data['asal_awal'] = $this->session->userdata('asal');
+        $data['tujuan_awal'] = $this->session->userdata('tujuan');
+        $this->load->view('admin/header');
+        $this->load->view('admin/tiket_edit', $data);
+    }
+
+    function editDataTiket(){
+        $dataEdit = array(
+            'kd_tiket' => $this->input->post('kodetiket'),
+            'kd_bus' => $this->input->post('kodebus'),
+            'nama_tiket' => $this->input->post('namatiket'),
+            'asal' => $this->input->post('asal'),
+            'tujuan' => $this->input->post('tujuan'),
+            'tgl' => $this->input->post('tgl'),
+            'jam' => $this->input->post('jam'),
+            'harga' => $this->input->post('harga'),
+            'sisa_tiket' => $this->input->post('sisa_tiket'),
+        );
+        
+        $this->session->set_userdata(
+        $data = array(
+                        'kd_tiket' => $this->input->post('kodetiket'),
+                        'kd_bus' => $this->input->post('kodebus'),
+                        'asal' => $this->input->post('asal'),
+                        'tujuan' => $this->input->post('tujuan'),
+            )
+        );
+
+    }
+
+    public function updateTiket()
+    {
+
+        
+        $dataUpdate = array(
+            'kd_tiket' => $this->input->post('kd_tiket'),
+            'kd_bus' => $this->input->post('kd_bus'),
+            'asal' => $this->input->post('asal'),
+            'tujuan' => $this->input->post('tujuan'),
+            'tgl' => $this->input->post('tgl'),
+            'jam' => $this->input->post('jam'),
+            'harga' => $this->input->post('harga'),
+            'sisa_tiket' => $this->input->post('sisa_tiket'),
+        );
+
+        $kode = $this->session->userdata('kd_tiket');
+        $this->db->where('kd_tiket', $kode);
+        $this->db->update('tiket', $dataUpdate);
+        
+        redirect(base_url('Admin/Menutiket'));    
     }
     
 }

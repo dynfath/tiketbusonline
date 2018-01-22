@@ -15,10 +15,11 @@
     <!-- Bootstrap core CSS -->
     <link href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css');?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/bootstrap/css/bootstrap.css');?>" rel="stylesheet">
-    
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Custom styles for this template -->
     <link href="assets/css/shop-homepage.css" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/sweetalert.css');?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assets/bootstrap/sweetalert.min.css');?>">
   </head>
 
   <body>
@@ -85,41 +86,12 @@
     <script src="<?php echo base_url('assets/jquery/jquery.min.js');?>"></script>
     <script src="<?php echo base_url('assets/jquery/jquery.js');?>"></script>
     <script src="<?php echo base_url('assets/bootstrap/js/bootstrap.bundle.min.js');?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/bootstrap/sweetalert-dev.js');?>"></script>
+    <script type="text/javascript" src="<?php echo base_url('assets/bootstrap/sweetalert.min.css');?>"></script>
+
     <script>
       $(document).ready(function(){
-        /*$('#btncari').on('click',function(){
-          
-          $.ajax({
-                url:"<?php echo base_url('Cari/caritiket'); ?>",
-                dataType: 'json',
-                success:function(response) { 
-                     console.log(response);
-                      $(".table #daftartiket").remove();
-                      $("<tr id='daftartiket'>").append(
-                      $("<th>").text('No tiket'),
-                      $("<th>").text('Tanggal'),
-                      $("<th>").text('Asal'),
-                      $("<th>").text('Tujuan'),
-                      $("<th>").text('Harga'),
-                      ).appendTo(".table");
-                      $.each(response,function(i){
-                         $("<tr id='daftartiket'>").append(
-                         $("<td>").text(response[i].kd_tiket),
-                         $("<td>").text(response[i].tgl),
-                         $("<td>").text(response[i].asal),
-                         $("<td>").text(response[i].tujuan),
-                         $("<td>").text(response[i].harga),
-                         $("<td><input type='button' class='btn btn-primary btn-xs' value='Pesan'>")
-                         ).appendTo(".table")}
-                        );
-                },
-                error: function(err){
-                  alret(err);
-                  $('.panel-body').remove();
-                }
-           });
-
-        });*/
+        
         $('#formcari').submit(function (e) {
               
               $.ajax({
@@ -145,14 +117,15 @@
                       ).appendTo(".table");
                       $.each(response,function(i){
                          $("<tr id='daftartiket'>").append(
-                         $("<td>").text(response[i].kd_tiket),
-                         $("<td>").text(response[i].tgl),
-                         $("<td>").text(response[i].asal),
-                         $("<td>").text(response[i].tujuan),
-                         $("<td>").text(response[i].harga),
-                         $("<td><input type='button' class='btn btn-primary btn-xs' value='Pesan'>")
-                         ).appendTo(".table")}
-                        );
+                         $("<td id='kodetiket"+i+"'>").text(response[i].kd_tiket),
+                         $("<td id='tanggal"+i+"'>").text(response[i].tgl),
+                         $("<td id='asal"+i+"'>").text(response[i].asal),
+                         $("<td id='tujuan"+i+"'>").text(response[i].tujuan),
+                         $("<td id='harga"+i+"'>").text(response[i].harga),
+                         $("<td><input type='number' class='form-control' style='width: 60px;' value='1' id='jumlah"+i+"' min='1' max='"+response[i].sisa_tiket+"'>"),
+                         $("<td><input type='button' id='btnPesan_"+i+"' class='btn btn-primary btn-xs' value='Pesan' onclick='order("+i+")'> ")
+                         ).appendTo(".table")
+                       });
                      }
                       
                 },
@@ -164,18 +137,58 @@
               e.preventDefault();
             });
         
-        
-        /*$('#btncari').submit(function(){
-            
-          
-
-        });*/
-        
       });
       
 
     </script>
+    <script type="text/javascript">
+      function order(id){
+        var id_user = "<?php echo $login['id_pengguna']; ?>";
+        console.log(id_user);
+        if (id_user=="") {
+          window.location.href = "<?php echo base_url('Login') ?>";
+          console.log('Tidak Login');
+        }else{
 
+          var kodetiket = ".table #kodetiket"+id;
+          var tanggal = ".table #tanggal"+id;
+          var harga = ".table #harga"+id;
+          var jumlah = "#jumlah"+id;
+
+          var data = {
+              'kode_tiket' : $(kodetiket).text(),
+              'tanggal' : $(tanggal).text(),
+              'harga' : $(harga).text(),
+              'jumlah' : $(jumlah).val(),
+              'id_pengguna' : id_user
+        };
+
+
+          console.log(data);
+          $.ajax({
+              url:"<?php echo base_url('Cari/ordertiket') ?>",
+              method:"POST",
+              data: data,
+              success:function(response)
+              {
+                  console.log(response); 
+                  swal({
+                  title: "Tiket Berhasil Dipesan!",
+                  type: "success",
+                   },
+                  function(){
+                      window.location.href = "<?php echo base_url('pesanan')?>";
+                  });
+               
+                },
+                error: function (err) {
+                    alert(err);
+                }
+            });
+        }
+    }
+
+</script>
 
   </body>
 

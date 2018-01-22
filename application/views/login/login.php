@@ -28,7 +28,7 @@
     <div class="form"> 
           <h1>Login</h1>
 
-      <form action="/" method="post" name="logpelanggan">
+      <form action="<?= base_url('login/login');?>" method="post" name="logpelanggan">
         
       <div class="field-wrap">
             <label>
@@ -41,6 +41,15 @@
               <label>Password<span class="req">*</span></label>
             <input type="password"required autocomplete="off" name="password"/>
           </div>
+          <?php if ($this->session->flashdata('result_login')) { ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <?php echo validation_errors(); ?>
+                <?php echo $this->session->flashdata('result_login'); ?>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+          <?php } ?>
           <button type="submit" class="button button-block">LOGIN</button>
         </form>  
     </div>

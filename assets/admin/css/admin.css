@@ -1,0 +1,11 @@
+.tambah{
+	background-color: #00BFFF;
+	float: right;
+	border-radius: 3px;
+}
+
+.kirim{
+	background-color: green;
+	float: right;
+	border-radius: 3px;
+}

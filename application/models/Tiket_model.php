@@ -22,7 +22,7 @@ class Tiket_model extends CI_Model
     function get_Tiketjoin()
         {
 
-            $this->db->select('kd_tiket, kd_bus, tgl, jam, k1.`nama_kota` AS asal, k2.`nama_kota` AS tujuan, harga, stock');
+            $this->db->select('kd_tiket, kd_bus, tgl, jam, k1.`nama_kota` AS asal_kota, k2.`nama_kota` AS tujuan_kota, asal, tujuan, harga, sisa_tiket');
             $this->db->from('tiket');
             $this->db->join('kota k1', 'tiket.asal = k1.id_kota');
             $this->db->join('kota k2', 'tiket.tujuan = k2.id_kota');
@@ -82,7 +82,7 @@ class Tiket_model extends CI_Model
 
     function found_tiket($datacari)
     {
-            $this->db->select('kd_tiket, kd_bus, tgl, jam, k1.`nama_kota` AS asal, k2.`nama_kota` AS tujuan, harga, stock');
+            $this->db->select('kd_tiket, kd_bus, tgl, jam, k1.`nama_kota` AS asal, k2.`nama_kota` AS tujuan, harga, sisa_tiket');
             $this->db->from('tiket');
             $this->db->join('kota k1', 'tiket.asal = k1.id_kota');
             $this->db->join('kota k2', 'tiket.tujuan = k2.id_kota');
@@ -91,5 +91,50 @@ class Tiket_model extends CI_Model
             $this->db->order_by('kd_tiket', 'ASC');
             $query = $this->db->get();
             return $query->result_array();
+    }
+
+    function order_tiket($data)
+    {
+        $insertorder = array(
+                'kd_tiket' => $data['kode_tiket'],
+                'id_pemesan' => $data['id_pemesan'],
+                'tgl_trans' => $data['tanggal'],
+                'jml_tiket' => $data['jumlah'],
+                'total_harga' => $data['jumlah'] * $data['harga']
+            );
+
+            $insert = $this->db->insert('pemesanan', $insertorder);
+
+            if ($insert) {
+            
+                $this->db->set('sisa_tiket', 'sisa_tiket -'.$data['jumlah'], false);
+                $this->db->where('kd_tiket', $data['kode_tiket']);
+                $this->db->update('tiket');
+            }
+
+            return true;
+    }
+
+    function getOrder($tiketorder)
+    {
+        $id_pemesan = $tiketorder['id_pemesan'];
+        $status = 0;
+        $data = array(
+            'id_pemesan' => $id_pemesan,
+            'status' => $status
+        );
+        $this->db->order_by('kd_pesan', 'DESC');
+        $query = $this->db->get_where('pemesanan', $data);
+        return $query->result();
+    }
+
+    function cancelOrder($data)
+    {
+        $kd_pesan = $data['kd_pesan'];
+        $data = array(
+            'kd_pesan' => $kd_pesan
+        );
+        $query = $this->db->delete('pemesanan', $data);
+        return true;
     }
 }

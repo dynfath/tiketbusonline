@@ -32,16 +32,16 @@
         <div class="container-fluid">
         
 
-                <form class="form" role="form" method="post" action="<?=base_url('Admin/updateTiket') ?>">
+                <form class="form" role="form" method="post" action="<?= base_url('Admin/tambahTiket');?>">
                     <form class="form-horizontal" role="form" >
-                <h2 align="center">Edit Tiket</h2>
+                <h2 align="center">Tambah Tiket</h2>
                 <div class="form-group" role="form-group">
                     <label for="firstName" class="col-sm-3 control-label">Kode Tiket</label>
                     <div class="col-sm-9">
-                        <?php foreach ($tiket as $value): ?>
                         
-                        <input type="text" value='<?=$value->kd_tiket ?>' name="kd_tiket" placeholder="Kode Tiket" class="form-control" autofocus>
-                        <?php endforeach ?>
+                        
+                        <input type="text" id='kd_tiket' name="kd_tiket" placeholder="Kode Tiket" class="form-control" autofocus>
+
                     </div>
                 </div>
 
@@ -49,11 +49,8 @@
                     <label for="country" class="col-sm-3 control-label">Kode Bus</label>
                     <div class="col-sm-9">
                         <select name="kd_bus" class="form-control">
-                            <?php foreach ($bus as $value): ?>                            
-                                <option value="<?=$value->kd_bus ?>" 
-                                    <?php if ($value->kd_bus==$kode_awal): echo "selected='selected'";?>
-                                    <?php endif ?> >
-                                <?= $value->kd_bus ?></option>
+                             <?php foreach ($bus as $value): ?>                            
+                                <option value="<?=$value->kd_bus ?>"><?= $value->kd_bus ?></option>
                             <?php endforeach ?>
 
                         </select>
@@ -65,11 +62,7 @@
                     <div class="col-sm-9">
                         <select name="asal" class="form-control">
                             <?php foreach ($kota as $value): ?>                            
-                                <option value="<?= $value->id_kota?>" 
-                                    <?php if ($value->id_kota==$asal_awal): ?>
-                                        <?php echo "selected='selected'" ?>
-                                    <?php endif ?>
-                                    ><?= $value->nama_kota ?></option>
+                                <option value="<?=$value->id_kota ?>"><?= $value->nama_kota ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -78,13 +71,9 @@
                 <div class="form-group" role="form-group">
                     <label for="country" class="col-sm-3 control-label">Tujuan</label>
                     <div class="col-sm-9">
-                        <select name="tujuan" class="form-control">
+                         <select name="tujuan" class="form-control">
                             <?php foreach ($kota as $value): ?>                            
-                                <option value="<?=$value->id_kota ?>"
-                                    <?php if ($value->id_kota==$tujuan_awal): ?>
-                                        <?php echo "selected='selected'" ?>
-                                    <?php endif ?>
-                                    ><?= $value->nama_kota ?></option>
+                                <option value="<?=$value->id_kota ?>"><?= $value->nama_kota ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -93,20 +82,19 @@
                 <div class="form-group" role="form-group">
                     <label for="birthDate" class="col-sm-3 control-label">Tanggal</label>
                     <div class="col-sm-9">
-                        <?php foreach ($tiket as $value): ?>
-                        
-                        <input type="text" value='<?=$value->tgl ?>' name="tgl" class="form-control" placeholder='yyyy-mm-dd' id='tgl'>
-                        <?php endforeach ?>
+
+                        <input type="text" id='tgl' name="tgl" class="form-control" placeholder='yyyy-mm-dd' id='tgl'>
+
                     </div>
                 </div>
 
                 <div class="form-group" role="form-group">
                     <label for="birthDate" class="col-sm-3 control-label">Jam Berangkat</label>
                     <div class="col-sm-9">
-                        <?php foreach ($tiket as $value): ?>
+
                         
-                        <input type="text" value='<?=$value->jam ?>' name="jam" class="form-control date" placeholder='hh:mm:ss' id='jam'>
-                        <?php endforeach ?>
+                        <input type="text" id='jam' name="jam" class="form-control date" placeholder='hh:mm:ss' id='jam'>
+
                     </div>
                 </div>
 
@@ -115,26 +103,25 @@
                 <div class="form-group" role="form-group">
                     <label for="firstName" class="col-sm-3 control-label">Harga</label>
                     <div class="col-sm-9">
-                        <?php foreach ($tiket as $value): ?>
+ 
                         
-                        <input type="text" value='<?=$value->harga ?>' name=harga  class="form-control" autofocus >
-                        <?php endforeach ?>
+                        <input type="text" id='harga' name='harga'  class="form-control" autofocus >
+
                     </div>
                 </div>
 
                 <div class="form-group" role="form-group">
                     <label for="firstName" class="col-sm-3 control-label">Stok</label>
                     <div class="col-sm-9">
-                        <?php foreach ($tiket as $value): ?>
-                        
-                        <input type="text" value='<?=$value->sisa_tiket ?>' name='sisa_tiket' class="form-control" autofocus >
-                        <?php endforeach ?>
+
+                        <input type="text" id='sisa_tiket' name='sisa_tiket' class="form-control" autofocus >
+
                     </div>
                 </div>
 
                 <div class="form-group" role="form-group">
                     <div class="col-sm-9 col-sm-offset-3">
-                        <input type="submit" class="btn btn-primary btn-block btn-update" value="Update" name="submit">
+                        <input type="submit" class="btn btn-primary btn-block btn-update" value="Tambahkan" name="submit">
                     </div>
                 </div>
             </form> <!-- /form -->

@@ -39,7 +39,7 @@ class Admin extends CI_Controller{
 
     function Menubis()
     {
-       
+        $data['bus'] = $this->Admin_model->getBus();
         $this->load->view('admin/header');
         $this->load->view('admin/databis', $data);
     }
@@ -127,5 +127,101 @@ class Admin extends CI_Controller{
         
         redirect(base_url('Admin/Menutiket'));    
     }
-    
+
+    public function addTiket(){
+        $data['kota'] = $this->Admin_model->getKota();
+        $data['bus'] = $this->Admin_model->getBus();
+        $this->load->view('admin/header');
+        $this->load->view('admin/tambah_tiket',$data);
+    }
+
+    public function tambahTiket()
+    {
+        $add = array(
+            'kd_tiket' => $this->input->post('kd_tiket'),
+            'kd_bus' => $this->input->post('kd_bus'),
+            'asal' => $this->input->post('asal'),
+            'tujuan' => $this->input->post('tujuan'),
+            'tgl' => $this->input->post('tgl'),
+            'jam' => $this->input->post('jam'),
+            'harga' => $this->input->post('harga'),
+            'sisa_tiket' => $this->input->post('sisa_tiket'),
+        );
+
+        $data = $this->Admin_model->addTiket($add);
+        redirect(base_url('Admin/Menutiket'));
+    }    
+
+     public function addbus(){
+        $data['kota'] = $this->Admin_model->getKota();
+        $data['bus'] = $this->Admin_model->getBus();
+        $this->load->view('admin/header');
+        $this->load->view('admin/tambah_bus',$data);
+    }
+
+    public function tambahbus()
+    {
+        $add = array(
+            'kd_bus' => $this->input->post('kd_bus'),
+            'nama_bus' => $this->input->post('nama_bus'),
+            'kapasitas' => $this->input->post('kapasitas')
+        );
+
+        $data = $this->Admin_model->addBus($add);
+        redirect(base_url('Admin/Menubis'));
+    }    
+
+    function hapusBus(){
+        $dataCari = array(
+            'kd_bus' => $this->input->post('kd_bus')
+        );
+        $data = $this->Admin_model->deletebus($dataCari);
+        echo json_encode($data);
+
+    }
+
+
+    function geteditbus()
+    {
+         $dataEdit = array(
+            'kd_bus' => $this->input->post('kd_bus')
+        );
+        
+        $this->session->set_userdata(
+        $data = array(
+            'kd_bus' => $this->input->post('kd_bus')
+            )
+        );
+        print_r($data);
+    }
+
+     function editbus(){
+
+        $dataKode = array(
+                        'kd_bus' => $this->session->userdata('kd_bus')
+                );
+        
+        $data['bus'] = $this->Admin_model->getKodeBus($dataKode);
+        $this->load->view('admin/header');
+        $this->load->view('admin/bus_edit', $data);
+    }
+
+    public function updateBus()
+    {
+
+        $kode = $this->session->userdata('kd_bus');
+        $dataUpdate = array(
+            'nama_bus' => $this->input->post('nama_bus'),
+            'kapasitas' => $this->input->post('kapasitas'),
+            'kd_bus' => $this->input->post('kd_bus'),
+
+        );
+
+        
+        $this->db->where('kd_bus', $kode);
+        $this->db->update('bus', $dataUpdate);
+        
+        redirect(base_url('Admin/Menubis'));    
+    }
+
 }

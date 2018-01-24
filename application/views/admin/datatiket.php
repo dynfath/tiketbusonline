@@ -29,13 +29,17 @@
         <div id="page-wrapper">
         <div class="container-fluid">
         <div class="row" id="main" >
+            <div class="col-sm-9 col-md-12 well" id="content">
+                <h2 class="my-1">TIKO BUS | Data Tiket</h2>
                 <div>
-                    <input type="button" name="" value="+ Tambah Tiket" class="btn btn-primary tambahTiket">
+                    <form method="post" action="<?= base_url('Admin/addTiket');?>">
+                    <input type="submit" name="" value="+ Tambah Tiket" class="btn btn-primary tambahTiket" >
+                    </form>
                 </div>
                 <br>
-                <div class="col-sm-12 col-md-12 well" id="content">
+                <div class="col-sm-12 col-md-12 well" id="content" >
 
-                   <table class="table ">
+                <table class="table ">
                 <thead>
                     <tr>
                         <th>Kode Tiket</th>
@@ -72,18 +76,21 @@
                                 data-tgl='<?= $value['tgl'] ?>'
                                 data-jam='<?= $value['jam'] ?>'
                                 data-harga='<?= $value['harga']  ?>'
-                                data-sisatiket='<?= $value['sisa_tiket']  ?>'></i>
-                            </a>
-                            <a href="#" class="delete" data-toggle="modal">
+                                data-sisatiket='<?= $value['sisa_tiket']  ?>'> Edit</i>
+                            </a></td>
+                            <td><a href="#" class="delete" data-toggle="modal">
                                 <i class="fa fa-trash hapusTiket" aria-hidden="true" name='hapusTiket'
-                                data-kodetiket='<?= $value['kd_tiket'] ?>'></i>
+                                data-kodetiket='<?= $value['kd_tiket'] ?>'> Hapus</i>
                             </a>
                         </td>
                     </tr>
 
 
                 <?php endforeach ?>
+                </tbody>
+                </table>
                 </div>
+            </div>
             </div> 
         </div>   
         </div>
@@ -92,7 +99,7 @@
     <script src="<?php echo base_url('assets/bootstrap/js/bootstrap.bundle.min.js');?>"></script>
     <script type="text/javascript" src="<?php echo base_url('assets/bootstrap/sweetalert-dev.js');?>"></script>
     <script type="text/javascript" src="<?php echo base_url('assets/bootstrap/sweetalert.min.css');?>"></script>
-    <script type="text/javascript">
+    <script>
     $(document).ready(function(){
         $(document).on('click','.hapusTiket',function(){
             var kd_tiket    = $(this).data('kodetiket');
@@ -121,7 +128,7 @@
                     {
                         console.log(data);
                         swal({
-                                title: "Tiket Berhasil Dihapus",
+                                title: "Data Tiket Berhasil Dihapus",
                                 type: "success",
                             },
                             function(){
@@ -150,7 +157,7 @@
             var tgl    = $(this).data('tgl');
             var jam    = $(this).data('jam');
             var harga    = $(this).data('harga');
-            var sisa_tiket    = $(this).data('sisa_tiket');
+            var sisa_tiket    = $(this).data('sisatiket');
                         
 
             var data = {
@@ -172,17 +179,13 @@
                     data: data,
                     success:function(data)
                     {
-                        window.location.href ='<?=base_url('Admin/edittiket') ?>';
+                        console.log(data);
+                       window.location.href ='<?=base_url('Admin/edittiket') ?>';
                         
                 }
             });
 
         });
-
-        /*$(document).on('click','.tambahTiket',function(){
-            window.location.href = "<?php echo base_url('Admin/addTiket') ?>";  
-        });*/
-
          
     });
 </script>	

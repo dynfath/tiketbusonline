@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Tiket Bus</title>
+    <title>TIKO BUS</title>
 
     <!-- Bootstrap core CSS -->
     <link href="<?php echo base_url('assets/bootstrap/css/bootstrap.min.css');?>" rel="stylesheet">
@@ -33,30 +33,13 @@
 
         <div class="col-lg-3">
 
-          <h1 class="my-4">Tiket Bus</h1>
+          <h1 class="my-4">TIKO BUS</h1>
           <div class="panel panel-primary">
-            <div class="panel-heading">Cari Tiket</div>
+            <div class="panel-heading">Pesan Tiket?</div>
             <div class="panel-body">
 
               <form action="<?= base_url('Cari');?>">
-              <div class="form-group">
-              <label for="sel1">Asal Kota : </label>
-              <select class="form-control required" title='Kota Asal tidak boleh kosong' id="asal">
-                  <?php foreach ($kota as $ka) { ?>
-                    <option ><?= $ka['nama_kota']; ?></option>
-                  <?php } ?>
-                  
-              </select>
-              </div> 
-
-              <div class="form-group">
-              <label for="sel2">Tujuan : </label>
-              <select class="form-control required" title='Kota Tujuan tidak boleh kosong' id="tujuan">
-                  <?php foreach ($kota as $kt) { ?>
-                    <option ><?= $kt['nama_kota']; ?></option>
-                  <?php } ?> 
-              </select>
-              </div>
+              Jika Anda ingin Mememesan tiket, silahkan cari tiketnya terlebih dahulu di Menu 
               <button type="submit" class="btn btn-primary">Cari</button>
               </form>
 
@@ -68,29 +51,42 @@
         <!-- /.col-lg-3 -->
 
         <div class="col-lg-9">
+
+          <div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+              <div class="carousel-item active">
+                <img class="d-block img-fluid" src="<?= base_url('assets/image/gambar1.png');?>" alt="First slide">
+              </div>
+              <div class="carousel-item">
+                <img class="d-block img-fluid" src="<?= base_url('assets/image/gambar2.png');?>" alt="Second slide">
+              </div>
+              <div class="carousel-item">
+                <img class="d-block img-fluid" src="<?= base_url('assets/image/gambar4.jpg');?>" alt="Third slide">
+              </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="sr-only">Next</span>
+            </a>
+          </div>
          
           <div class="panel panel-primary">
-            <div class="panel-heading" >Daftar Bus Hari ini</div>
             <div class="panel-body">
-              <table class="table">
-                <tr>
-                  <th>Tiket</th>
-                  <th>Kota Asal</th>
-                  <th>Kota Tujuan</th>
-                  <th>Jam Berangkat</th>
-                  <th></th>
-                </tr>
-                <?php foreach ($tiket as $t) { ?>
-                    <tr>
-                      <td><?= $t['kd_tiket']; ?></td>
-                      <td><?= $t['asal']; ?></td>
-                      <td><?= $t['tujuan']; ?></td>
-                      <td><?= $t['jam']; ?></td>
-                      <td><button type="submit" class="btn btn-primary">Pesan</button></td>
-                    </tr>
-                  <?php } ?>
-                
-              </table>
+              <p>Website ini adalah untuk pemesanan tiket bus antar kota dan kabupaten di pulau jawa. 
+              </p>
+              <p>Untuk memesan tiket, diperlukan login terlebih dahulu.  
+              </p>
+              <p>Jika anda tidak mempunyai akun silahkan daftar terlebih dahulu.
+              </p>
             </div>
           </div>
           <!-- /.row -->

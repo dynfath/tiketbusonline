@@ -30,7 +30,7 @@
             <div class="row" id="main" >
                 
                 <div class="col-sm-12 col-md-12 well" id="content">
-
+                <h2 class="my-1">TIKO BUS | Konfirmasi Pemesanan</h2>
                    <table class="table">
 
                     <tr>

@@ -20,6 +20,7 @@
 		}
 
 		public function getKota(){
+			$this->db->order_by('nama_kota', 'ASC');
 			$query = $this->db->get('kota');
 			return $query->result();
 		}
@@ -37,6 +38,13 @@
             $this->db->join('kota k2', 'tiket.tujuan = k2.id_kota');
             $this->db->where('kd_tiket', $dataKode['kd_tiket']);
             $query = $this->db->get();
+			return $query->result();
+		}
+
+		public function getKodeBus($dataKode)
+		{
+			$data = array('kd_bus' => $dataKode['kd_bus']);
+			$query = $this->db->get_where('bus', $data);
 			return $query->result();
 		}
 
@@ -61,6 +69,43 @@
 			return true;
 		}
 
+		public function addTiket($add)
+		{
+			$data = array(
+				'kd_tiket' => $add['kd_tiket'],
+				'kd_bus' => $add['kd_bus'],
+				'asal' => $add['asal'],
+				'tujuan' => $add['tujuan'],
+				'tgl' => $add['tgl'],
+				'jam' => $add['jam'],
+				'harga' => $add['harga'],
+				'sisa_tiket' => $add['sisa_tiket'],
+			);
+
+			$this->db->insert('tiket',$data);
+			return true;
+		}
+
+		function addBus($add){
+			$data = array(
+			 	'kd_bus' => $add['kd_bus'],
+				'nama_bus' => $add['nama_bus'],
+				'kapasitas' => $add['kapasitas'],
+			);
+
+			$this->db->insert('bus',$data);
+			return true;
+		}
+
+		function deletebus($dataCari){
+
+			$kd_bus = $dataCari['kd_bus'];
+			$data = array(
+				'kd_bus' => $kd_bus
+			);
+			$query = $this->db->delete('bus', $data);
+			return true;
+		}
 
 
 	}
